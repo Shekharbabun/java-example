@@ -1,0 +1,37 @@
+pipeline {
+    agent none 
+
+    stages {
+        stage('Stage 1 - main') {
+            agent { label 'Agent1' } 
+            steps {
+                echo 'Running Stage 1: Build'
+                sh 'echo "Building the repository"'
+            }
+        }
+        
+        stage('Stage 2 - dev') {
+            agent { label 'Agent2' }  
+            steps {
+                echo 'Running Stage 2: Developement'
+                sh 'echo "Running the developements"'
+            }
+        }
+
+        stage('Stage 3 - Test') {
+            agent { label 'Agent2' } 
+            steps {
+                echo 'Running Stage 3: Testing'
+                sh 'echo "Testing the application"'
+            }
+        }
+
+        stage('Stage 4 - prod') {
+            agent { label 'Agent2' }  
+            steps {
+                echo 'Running Stage 4: Production'
+                sh 'echo "Deploying to the production enviroment"'
+            }
+        }
+    }
+}
