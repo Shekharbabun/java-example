@@ -1,1 +1,38 @@
+pipeline{
+    agent{label 'java'}
+    stages{
+        stage('checkout'){
+            steps {
+                git branch: 'main', url: 'https://github.com/sudheer76R/java-example.git'
+            }
+        }
+        stage('test') {
+            steps {
+                echo 'testing the unit test case'
+                }
+            }
 
+        stage('build') {
+            steps {
+                sh 'mvn clean package'
+                }
+            }
+        
+        stage('deploy'){
+            steps{
+                sh "sudo rsync -av -delete /home/ubuntu/jenkins/Agents/workspace/Depoly_t_tomcat_3rd_question/target /home/ubuntu/tomcat10/webapps/"
+                sh "sudo /home/ubuntu/tomcat10/bin/shutdown.sh"
+                sh "sudo /home/ubuntu/tomcat10/bin/startup.sh"
+                }
+            }
+        }
+    }
+
+    post {
+        success {
+            echo 'Deployment successful!'
+        }
+        failure {
+            echo 'Deployment failed!'
+        }
+    }
